@@ -2,23 +2,23 @@
   "name": "immortal-validation",
   "version": "1.0.1",
   "description": "Javascript validation helper for Vue and Laravel",
+  "author": "Javed Ahmadzai <theahmadzai@hotmail.com>",
+  "license": "MIT",
   "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "homepage": "https://github.com/theahmadzai/js-validation#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/theahmadzai/js-validation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theahmadzai/js-validation/issues"
   },
   "keywords": [
     "validation",
     "vue",
     "laravel"
   ],
-  "author": "Javed Ahmadzai <theahmadzai@hotmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/theahmadzai/js-validation/issues"
-  },
-  "homepage": "https://github.com/theahmadzai/js-validation#readme"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
