@@ -1,6 +1,6 @@
 {
   "name": "immortal-validation",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Javascript validation helper for Vue and Laravel",
   "author": "Javed Ahmadzai <theahmadzai@hotmail.com>",
   "license": "MIT",
