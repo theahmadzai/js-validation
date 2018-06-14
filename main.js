@@ -1,106 +1,94 @@
-"use strict";
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+class Errors {
+  constructor() {
+    this.errors = {};
+  }
 
-var Errors =
-  /*#__PURE__*/
-  (function() {
-    function Errors() {
-      this.errors = {};
+  has(field) {
+    return this.errors.hasOwnProperty(field);
+  }
+
+  any() {
+    return Object.keys(this.errors).length > 0;
+  }
+
+  get(field) {
+    if(this.errors[field]) {
+      return this.errors[field][0];
+    }
+  }
+
+  record(errors) {
+    this.errors = errors;
+  }
+
+  clear(field) {
+    if(field) {
+      delete this.errors[field];
+      return;
     }
 
-    var _proto = Errors.prototype;
+    this.errors = {};
+  }
+};
 
-    _proto.has = function has(field) {
-      return this.errors.hasOwnProperty(field);
-    };
+module.exports = Errors;
 
-    _proto.any = function any() {
-      return Object.keys(this.errors).length > 0;
-    };
+},{}],2:[function(require,module,exports){
+const Errors = require('./errors.js');
 
-    _proto.get = function get(field) {
-      if (this.errors[field]) {
-        return this.errors[field][0];
-      }
-    };
+class Form {
+  constructor(source, data = {}) {
+    this.source = source;
 
-    _proto.record = function record(errors) {
-      this.errors = errors;
-    };
-
-    _proto.clear = function clear(field) {
-      if (field) {
-        delete this.errors[field];
-        return;
-      }
-
-      this.errors = {};
-    };
-
-    return Errors;
-  })();
-
-var Form =
-  /*#__PURE__*/
-  (function() {
-    function Form(source, data) {
-      if (data === void 0) {
-        data = {};
-      }
-
-      this.source = source;
-
-      if (data !== Object(data)) {
-        return;
-      }
-
-      this.data = data;
-
-      for (var field in data) {
-        this[field] = data[field];
-      }
-
-      this.errors = new Errors();
+    if(data !== Object(data)) {
+      return;
     }
 
-    var _proto2 = Form.prototype;
+    this.data = data;
 
-    _proto2.data = function data() {
-      var data = {};
+    for(let field in data) {
+      this[field] = data[field];
+    }
 
-      for (var field in this.data) {
-        data[field] = this[field];
-      }
+    this.errors = new Errors();
+  }
 
-      return data;
-    };
 
-    _proto2.reset = function reset() {
-      for (var field in this.data) {
-        this[field] = null;
-      }
-    };
+  data() {
+    let data = {};
 
-    _proto2.submit = function submit(method, url) {
-      var _this = this;
+    for(let field in this.data) {
+      data[field] = this[field];
+    }
 
-      return new Promise(function(resolve, reject) {
-        _this.source[method](url, _this.data())
-          .then(function(response) {
-            _this.reset();
+    return data;
+  }
 
-            _this.errors.clear();
 
-            resolve(response.data);
-          })
-          .catch(function(error) {
-            _this.errors.record(error.response.data);
+  reset() {
+    for(let field in this.data) {
+      this[field] = null;
+    }
+  }
 
-            reject(error.response.data);
-          });
-      });
-    };
 
-    return Form;
-  })();
+  submit(method, url) {
+    return new Promise((resolve, reject) => {
+      this.source[method](url, this.data())
+        .then(response => {
+          this.reset();
+          this.errors.clear();
+          resolve(response.data);
+        })
+        .catch(error => {
+          this.errors.record(error.response.data);
+          reject(error.response.data);
+        });
+    });
+  }
+};
 
 module.exports = Form;
+
+},{"./errors.js":1}]},{},[2]);
